@@ -10,6 +10,7 @@ import Notfound from "./presentation/pages/notfound";
 import Profile from "./presentation/pages/Profile";
 import Footer from "./presentation/components/Footer/Footer";
 import Topic from "./presentation/pages/Topic";
+import PostDetails from "./presentation/pages/PostDetails";
 function App() {
   return (
     <div className="App">
@@ -24,6 +25,7 @@ function App() {
             <Route path="/topic/:id" element={<Topic />} />
             <Route path="/user/profile" element={<Profile />} />
             <Route path="/user/:id" element={<Child />} />
+            <Route path="/posts/:id" element={<PostDetailsChild/>} />
             <Route path="*" element={<Notfound />} />
           </Routes>
         </BrowserRouter>
@@ -40,6 +42,17 @@ function App() {
     return (
       <div>
         <h3>ID: {id}</h3>
+      </div>
+    );
+  }
+  function PostDetailsChild() {
+    // We can use the `useParams` hook here to access
+    // the dynamic pieces of the URL.
+    let { id } = useParams();
+  
+    return (
+      <div>
+          {id !== undefined && <PostDetails postId={id} />}
       </div>
     );
   }

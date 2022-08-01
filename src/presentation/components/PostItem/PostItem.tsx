@@ -9,8 +9,7 @@ interface IProps {
 
 
 const PostItem: React.FC<IProps> = (props: IProps) => {
-  var postUrl = "http://localhost:3000/post/" + props.post.id;
-  var postImageUrl = "http://localhost:3000/post/" + props.post.imageUrl;
+  var postUrl = "http://localhost:3000/posts/" + props.post.id;
   const [topic, setTopic] = React.useState<string>("");
  
   useEffect(() => {
@@ -32,12 +31,12 @@ const PostItem: React.FC<IProps> = (props: IProps) => {
         <a href="#">
           <img
             className="rounded-t-lg"
-            src={props.post.imageUrl}
+            src="https://picsum.photos/seed/picsum/600/400"
             alt="post's image"
           />
         </a>
         <div className="p-5">
-          <a href="#">
+          <a href={postUrl}>
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
               {props.post.title}
             </h5>
@@ -52,7 +51,7 @@ const PostItem: React.FC<IProps> = (props: IProps) => {
           </div>
           <br />
           <a
-            href="#"
+            href={postUrl}
             className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Read more

@@ -93,7 +93,7 @@ const Upload = () => {
               htmlFor="topics"
               className="text-sm font-bold text-gray-600 block"
             >
-              Choose a topic
+              Topic
             </label>
             <select
               id="topics"

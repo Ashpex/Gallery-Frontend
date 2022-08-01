@@ -2,8 +2,11 @@ import React from "react";
 import comment from "../../../domain/entity/comment";
 import logo from "../../../assets/logo.png";
 
+type Props = {
+  comment: comment;
+}
 
-const Comment:React.FC<comment> = (comment) => {
+const CommentCard:React.FC<Props> = (props) => {
 
   return (
     <>
@@ -23,11 +26,11 @@ const Comment:React.FC<comment> = (comment) => {
                   2 hours ago
                 </time>
                 <div className="text-sm font-semibold text-gray-900 lex dark:text-gray-300 hover:underline">
-                  {comment.user.name}
+                  {props.comment.user.name}
                 </div>
               </div>
               <div className="p-3 text-xs font-normal text-gray-900 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300">
-                {comment.content}
+                {props.comment.content}
               </div>
             </div>
           </li>
@@ -37,4 +40,4 @@ const Comment:React.FC<comment> = (comment) => {
   );
 };
 
-export default Comment;
+export default CommentCard;
