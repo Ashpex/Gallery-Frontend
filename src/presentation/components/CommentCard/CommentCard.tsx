@@ -26,7 +26,7 @@ const CommentCard:React.FC<Props> = (props) => {
                   2 hours ago
                 </time>
                 <div className="text-sm font-semibold text-gray-900 lex dark:text-gray-300 hover:underline">
-                  {props.comment.user.name}
+                  test
                 </div>
               </div>
               <div className="p-3 text-xs font-normal text-gray-900 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300">

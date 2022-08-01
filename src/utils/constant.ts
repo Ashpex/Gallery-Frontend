@@ -4,3 +4,4 @@ export const apiUrlUser = apiUrl + 'user/';
 export const apiUrlPost = apiUrl + 'posts/';
 export const apiUrlComment = apiUrl + 'comments/';
 export const apiUrlTopic = apiUrl + 'topics/';
+export const apiUrlLike = apiUrl + 'likes/';

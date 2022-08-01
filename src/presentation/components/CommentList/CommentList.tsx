@@ -21,7 +21,7 @@ const CommentList: React.FC<IProps> = (IProps) => {
       });
   }, []);
   return (
-    <div>
+    <div className="w-full">
       {comments.map((comments: Comment) => {
         return <CommentCard comment={comments} />;
       })}
