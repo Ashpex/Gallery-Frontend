@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import React from "react";
+import "./App.css";
+import { Nav } from "./presentation/components/Nav/Nav";
+import Register from "./presentation/pages/Register";
+import { BrowserRouter, Route, Routes, useParams } from "react-router-dom";
+import Home from "./presentation/pages/Home";
+import Login from "./presentation/pages/Login";
+import Upload from "./presentation/pages/Upload";
+import Notfound from "./presentation/pages/notfound";
+import Profile from "./presentation/pages/Profile";
+import Footer from "./presentation/components/Footer/Footer";
+import Topic from "./presentation/pages/Topic";
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="container mx-auto">
+        <Nav />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/upload" element={<Upload />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/topic/:id" element={<Topic />} />
+            <Route path="/user/profile" element={<Profile />} />
+            <Route path="/user/:id" element={<Child />} />
+            <Route path="*" element={<Notfound />} />
+          </Routes>
+        </BrowserRouter>
+        <br />
+        <Footer />
+      </div>
     </div>
   );
+  function Child() {
+    // We can use the `useParams` hook here to access
+    // the dynamic pieces of the URL.
+    let { id } = useParams();
+  
+    return (
+      <div>
+        <h3>ID: {id}</h3>
+      </div>
+    );
+  }
 }
 
 export default App;
