@@ -8,21 +8,6 @@ import { apiUrlPost } from "../../../utils/constant";
 interface Props {
   post: Post;
 }
-let imageUrl = "https://picsum.photos/400/300";
-let randomtext = "Lorem ipsum dolor sit amet consectetur adipisicing elit.";
-let randomtitle = "Amet consectetur";
-var randomUser: User = {
-  id: 1,
-  name: "test",
-  email: "test@gmail.com",
-};
-var randomPost: Post = {
-  id: 1,
-  title: randomtitle,
-  description: randomtext,
-  imageUrl: imageUrl,
-  user: randomUser,
-};
 
 const Tab: React.FC<PropsWithChildren> = () => {
   const [allPosts, setAllPosts] = React.useState<Post[]>([]);
@@ -102,7 +87,6 @@ const Tab: React.FC<PropsWithChildren> = () => {
               return <PostItem post={trendingPosts} />;
             })}
           </div>
-          <PostItem post={randomPost} />
         </Tabs.Item>
         <Tabs.Item title="Subscribed topics">
           <div className="grid grid-cols-3 gap-3">
@@ -110,7 +94,6 @@ const Tab: React.FC<PropsWithChildren> = () => {
               return <PostItem post={subscribedPosts} />;
             })}
           </div>{" "}
-          <PostItem post={randomPost} />
         </Tabs.Item>
         <Tabs.Item title="Followers"></Tabs.Item>
         <div className="grid grid-cols-3 gap-3">

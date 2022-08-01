@@ -7,6 +7,7 @@ import CommentCard from "../components/CommentCard/CommentCard";
 import Comment from "../../domain/entity/comment";
 import axios from "axios";
 import { apiUrlPost } from "../../utils/constant";
+import CommentList from "../components/CommentList/CommentList";
 let imageUrl = "https://picsum.photos/seed/picsum/600/400";
 let randomtext =
   "Aliquam a tristique sapien, nec bibendum urna. Maecenas convallis dignissim turpis, non suscipit mauris interdum at. Morbi sed gravida nisl, a pharetra nulla. Etiam tincidunt turpis leo, ut mollis ipsum consectetur quis. Etiam faucibus est risus, ac condim ntum mauris consequat nec. Curabitur eget feugiat massa";
@@ -54,7 +55,7 @@ const PostDetails:React.FC<IProps> = (IProps) => {
         {post !== undefined && <PostCard post={post} />}
         <TextArea />
         <br />
-        <CommentCard comment={randomComment} />
+        <CommentList postID={IProps.postId} />
 
       </div>
 

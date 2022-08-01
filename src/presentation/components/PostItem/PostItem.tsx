@@ -2,14 +2,14 @@ import axios from "axios";
 import { Badge } from "flowbite-react";
 import React, { useEffect } from "react";
 import post from "../../../domain/entity/post";
-import { apiUrlPost, apiUrlTopic } from "../../../utils/constant";
+import { apiUrlPost, apiUrlTopic, LOCAL_URL } from "../../../utils/constant";
 interface IProps {
   post: post;
 }
 
 
 const PostItem: React.FC<IProps> = (props: IProps) => {
-  var postUrl = "http://localhost:3000/posts/" + props.post.id;
+  var postUrl = LOCAL_URL + "posts/" + props.post.id;
   const [topic, setTopic] = React.useState<string>("");
  
   useEffect(() => {
