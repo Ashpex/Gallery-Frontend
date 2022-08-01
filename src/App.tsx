@@ -22,9 +22,9 @@ function App() {
             <Route path="/upload" element={<Upload />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/topic/:id" element={<Topic />} />
+            <Route path="/topic/:id" element={<TopicChild />} />
             <Route path="/user/profile" element={<Profile />} />
-            <Route path="/user/:id" element={<Child />} />
+            <Route path="/user/:id" element={<UserChild />} />
             <Route path="/posts/:id" element={<PostDetailsChild/>} />
             <Route path="*" element={<Notfound />} />
           </Routes>
@@ -36,7 +36,7 @@ function App() {
   );
 
 
-  function Child() {
+  function UserChild() {
     let { id } = useParams();
     return (
       <div>
@@ -50,6 +50,14 @@ function App() {
     return (
       <div>
           {id !== undefined && <PostDetails postId={id} />}
+      </div>
+    );
+  }
+  function TopicChild() {
+    let { id } = useParams();
+    return (
+      <div>
+          {id !== undefined && <Topic topicId={id} />}
       </div>
     );
   }

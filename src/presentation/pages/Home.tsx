@@ -4,8 +4,7 @@ import { apiUrlPost } from "../../utils/constant";
 import SuccessAlert from "../components/Alerts/SuccessAlert";
 import axios from "axios";
 import ErrorAlert from "../components/Alerts/ErrorAlert";
-import ButtonTest from "../components/ButtonTest/button";
-
+import TopicButton from "../components/TopicButton/TopicButton";
 const Home = () => {
   useEffect(() => {
     (async () => {
@@ -22,7 +21,11 @@ const Home = () => {
   }, []);
   return (
     <>
+      <div className="container flex items-center flex-col w-full">
+        <TopicButton />
+      </div>
       <Tab />
+
     </>
   );
 };
