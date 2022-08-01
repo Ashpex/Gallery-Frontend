@@ -1,12 +1,14 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
-import { apiUrlPost } from "../../utils/constant";
+import { apiUrlPost, apiUrlTopic } from "../../utils/constant";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
+import Topic from "../../domain/entity/topic";
 
 const Upload = () => {
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [topic, setTopic] = React.useState(0);
+  const [topicList, setTopicList] = React.useState<Topic[]>([]);
   const [seletedFile, setSeletedFile] = React.useState<File | null>(null);
   const [redirect, setRedirect] = useState(false);
 
@@ -34,6 +36,20 @@ const Upload = () => {
       });
 
   };
+
+  useEffect(() => {
+    axios
+      .get(apiUrlTopic, {
+        headers: {
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res: any) => {
+        console.log(res.data.data);
+        setTopicList(res.data.data as Topic[]);
+      });
+  }, []);
+
   if (redirect) {
     return <Navigate to="/" />;
   }
@@ -88,9 +104,11 @@ const Upload = () => {
               <option value={NaN} selected>
                 Choose topic
               </option>
-              <option value={1}>Dog</option>
-              <option value={2}>Cat</option>
-              <option value={3}>Bird</option>
+              {topicList.map((topic) => (
+                <option key={topic.id} value={topic.id}>
+                  {topic.title}
+                </option>
+              ))}
             </select>
             <p />
 
