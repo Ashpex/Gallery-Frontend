@@ -2,29 +2,46 @@ import axios from "axios";
 import { Badge } from "flowbite-react";
 import React, { useEffect } from "react";
 import post from "../../../domain/entity/post";
-import { apiUrlPost, apiUrlTopic, LOCAL_URL } from "../../../utils/constant";
+import {
+  apiUrlComment,
+  apiUrlLike,
+  apiUrlPost,
+  apiUrlTopic,
+  LOCAL_URL,
+} from "../../../utils/constant";
+import { GetAllTopics } from "../../../domain/api/topic";
+import { AiOutlineLike, AiOutlineComment } from "react-icons/ai";
+import { GetPostById } from "../../../domain/api/post";
+import { CountLikes } from "../../../domain/api/like";
+import { CountComments } from "../../../domain/api/comment";
 interface IProps {
   post: post;
 }
 
-
 const PostItem: React.FC<IProps> = (props: IProps) => {
   var postUrl = LOCAL_URL + "posts/" + props.post.id;
   const [topic, setTopic] = React.useState<string>("");
- 
+  const [likeCount, setLikeCount] = React.useState<number>(0);
+  const [commentCount, setCommentCount] = React.useState<number>(0);
+
   useEffect(() => {
-    axios
-      .get(apiUrlPost + props.post.id, {
-        headers: {
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res: any) => {
-        console.log(res.data.data.topic.title);
-        setTopic(res.data.data.topic.title as string);
-      });
+    GetPostById(props.post.id).then((res: any) => {
+      setTopic(res.data.topic.title as string);
+    });
   }, []);
-  
+
+  useEffect(() => {
+    CountLikes(props.post.id).then((res: any) => {
+      setLikeCount(res.data as number);
+    });
+  }, []);
+
+  useEffect(() => {
+    CountComments(props.post.id).then((res: any) => {
+      setCommentCount(res.data as number);
+    });
+  }, []);
+
   return (
     <>
       <div className="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
@@ -48,9 +65,16 @@ const PostItem: React.FC<IProps> = (props: IProps) => {
             <Badge href="#" size="sm">
               {topic}
             </Badge>
+            <div className="flex cursor-pointer items-center transition hover:text-slate-600">
+              <AiOutlineComment className="text-gray-600" size={18} />
+              <span>{commentCount}</span>
+            </div>
+            <div className="flex cursor-pointer items-center transition hover:text-slate-600">
+              <AiOutlineLike className="text-gray-600" size={18} />
+              <span>{likeCount}</span>
+            </div>
           </div>
           <br />
-
         </div>
       </div>
     </>
@@ -58,4 +82,3 @@ const PostItem: React.FC<IProps> = (props: IProps) => {
 };
 
 export default PostItem;
-

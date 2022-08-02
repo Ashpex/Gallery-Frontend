@@ -3,28 +3,29 @@ import { Button } from "flowbite-react";
 import React, { useEffect } from "react";
 import Topic from "../../../domain/entity/topic";
 import { apiUrlTopic } from "../../../utils/constant";
+import { GetAllTopics, GetTopicById } from "../../../domain/api/topic";
 
 interface IProps {
   topic: Topic;
 }
 
-
-
-var ButtonType = ["purpleToBlue","cyanToBlue","greenToBlue","purpleToPink","pinkToOrange","tealToLime","redToYellow" ];
+var ButtonType = [
+  "purpleToBlue",
+  "cyanToBlue",
+  "greenToBlue",
+  "purpleToPink",
+  "pinkToOrange",
+  "tealToLime",
+  "redToYellow",
+];
 
 const TopicButton = () => {
   const [topics, setTopics] = React.useState<Topic[]>([]);
+
   useEffect(() => {
-    axios
-      .get(apiUrlTopic, {
-        headers: {
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res: any) => {
-        console.log(res.data);
-        setTopics(res.data.data as Topic[]);
-      });
+    GetAllTopics().then((res: any) => {
+      setTopics(res.data as Topic[]);
+    });
   }, []);
 
   return (
@@ -34,7 +35,9 @@ const TopicButton = () => {
           return (
             <Button
               onClick={handleClick(topic.id)}
-              gradientDuoTone={ButtonType[Math.floor(Math.random() * ButtonType.length)]}
+              gradientDuoTone={
+                ButtonType[Math.floor(Math.random() * ButtonType.length)]
+              }
             >
               {topic.title}
             </Button>

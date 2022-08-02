@@ -2,50 +2,38 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import Post from "../../../domain/entity/post";
 import { apiUrlComment, apiUrlLike, apiUrlPost } from "../../../utils/constant";
+import { AiOutlineLike, AiOutlineComment } from "react-icons/ai";
+import { GetPostById } from "../../../domain/api/post";
+import { CountLikes } from "../../../domain/api/like";
+import { CountComments } from "../../../domain/api/comment";
 interface IProps {
   post: Post;
 }
 const PostCard: React.FC<IProps> = (props: IProps) => {
+  const [topicID, setTopicID] = React.useState<number>(0);
   const [topic, setTopic] = React.useState<string>("");
   const [likeCount, setLikeCount] = React.useState<number>(0);
   const [commentCount, setCommentCount] = React.useState<number>(0);
+
   useEffect(() => {
-    axios
-      .get(apiUrlPost + props.post.id, {
-        headers: {
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res: any) => {
-        console.log(res.data.data.topic.title);
-        setTopic(res.data.data.topic.title as string);
-      });
-  }, []);
-  useEffect(() => {
-    axios
-      .get(apiUrlLike + "count/" + props.post.id, {
-        headers: {
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res: any) => {
-        console.log(res.data.data);
-        setLikeCount(res.data.data as number);
-      });
+    GetPostById(props.post.id).then((res: any) => {
+      setTopicID(res.data.topic.id as number);
+      setTopic(res.data.topic.title as string);
+    });
   }, []);
 
   useEffect(() => {
-    axios
-      .get(apiUrlComment + "count/" + props.post.id, {
-        headers: {
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res: any) => {
-        console.log(res.data.data);
-        setCommentCount(res.data.data as number);
-      });
+    CountLikes(props.post.id).then((res: any) => {
+      setLikeCount(res.data as number);
+    });
   }, []);
+
+  useEffect(() => {
+    CountComments(props.post.id).then((res: any) => {
+      setCommentCount(res.data as number);
+    });
+  }, []);
+
   return (
     <>
       <div className="flex items-center justify-center min-h-full">
@@ -59,7 +47,10 @@ const PostCard: React.FC<IProps> = (props: IProps) => {
               </div>
             </div>
             <div className="flex items-center space-x-8">
-              <button className="rounded-2xl border bg-neutral-100 px-3 py-1 text-xs font-semibold">
+              <button
+                className="rounded-2xl border bg-neutral-100 px-3 py-1 text-xs font-semibold"
+                onClick={handleTopicClick(topicID)}
+              >
                 {topic}
               </button>
               <div className="text-xs text-neutral-500">2 hours ago</div>
@@ -86,37 +77,13 @@ const PostCard: React.FC<IProps> = (props: IProps) => {
             <div className="flex items-center justify-between text-slate-500">
               <div className="flex space-x-4 md:space-x-8">
                 <div className="flex cursor-pointer items-center transition hover:text-slate-600">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="mr-1.5 h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
-                    />
-                  </svg>
+                  <AiOutlineComment className="text-gray-600" size={20} />
+
                   <span>{commentCount}</span>
                 </div>
                 <div className="flex cursor-pointer items-center transition hover:text-slate-600">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="mr-1.5 h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
-                    />
-                  </svg>
+                  <AiOutlineLike className="text-gray-600" size={20} />
+
                   <span>{likeCount}</span>
                 </div>
               </div>
@@ -128,4 +95,12 @@ const PostCard: React.FC<IProps> = (props: IProps) => {
   );
 };
 
+function handleTopicClick(
+  id: number
+): React.MouseEventHandler<HTMLButtonElement> | undefined {
+  return (event) => {
+    event.preventDefault();
+    window.location.href = `/topic/${id}`;
+  };
+}
 export default PostCard;

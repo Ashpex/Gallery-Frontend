@@ -4,22 +4,17 @@ import Comment from "../../../domain/entity/comment";
 import { apiUrlComment } from "../../../utils/constant";
 import CommentBox from "../CommentBox/CommentBox";
 import CommentCard from "../CommentCard/CommentCard";
+import { GetAllComments } from "../../../domain/api/comment";
+
 interface IProps {
   postID: string;
 }
 const CommentList: React.FC<IProps> = ({ postID }) => {
   const [comments, setComments] = React.useState<Comment[]>([]);
   useEffect(() => {
-    axios
-      .get(apiUrlComment + "post/" + postID, {
-        headers: {
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res: any) => {
-        console.log(res.data);
-        setComments(res.data.data as Comment[]);
-      });
+    GetAllComments(postID).then((res: any) => {
+      setComments(res.data as Comment[]);
+    });
   }, []);
   return (
     <div className="w-full">

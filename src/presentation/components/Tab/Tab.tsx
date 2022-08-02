@@ -5,6 +5,13 @@ import User from "../../../domain/entity/user";
 import PostItem from "../PostItem/PostItem";
 import axios from "axios";
 import { apiUrlPost } from "../../../utils/constant";
+import {
+  GetAllPosts,
+  GetTrendingPosts,
+  GetFollowingPosts,
+  GetSubscribedTopicPosts,
+} from "../../../domain/api/post";
+
 interface Props {
   post: Post;
 }
@@ -16,59 +23,27 @@ const Tab: React.FC<PropsWithChildren> = () => {
   const [followersPosts, setFollowersPosts] = React.useState<Post[]>([]);
 
   useEffect(() => {
-    axios
-      .get(apiUrlPost, {
-        headers: {
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res: any) => {
-        console.log(res.data);
-        setAllPosts(res.data.data as Post[]);
-      });
+    GetAllPosts().then((res: any) => {
+      setAllPosts(res.data as Post[]);
+    });
   }, []);
 
   useEffect(() => {
-    console.log(allPosts);
-  }, [allPosts]);
-
-  useEffect(() => {
-    axios
-      .get(apiUrlPost + "trending", {
-        headers: {
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res: any) => {
-        console.log(res.data);
-        setTrendingPosts(res.data.data as Post[]);
-      });
+    GetTrendingPosts().then((res: any) => {
+      setTrendingPosts(res.data as Post[]);
+    });
   }, []);
 
   useEffect(() => {
-    axios
-      .get(apiUrlPost + "following", {
-        headers: {
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res: any) => {
-        console.log(res.data);
-        setFollowersPosts(res.data.data as Post[]);
-      });
+    GetFollowingPosts().then((res: any) => {
+      setSubscribedPosts(res.data as Post[]);
+    });
   }, []);
 
   useEffect(() => {
-    axios
-      .get(apiUrlPost + "subscribed", {
-        headers: {
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res: any) => {
-        console.log(res.data);
-        setSubscribedPosts(res.data.data as Post[]);
-      });
+    GetSubscribedTopicPosts().then((res: any) => {
+      setSubscribedPosts(res.data as Post[]);
+    });
   }, []);
 
   return (

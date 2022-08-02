@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import Post from "../../domain/entity/post";
 import PostCard from "../components/PostCard/PostCard";
-import axios from "axios";
-import { apiUrlPost } from "../../utils/constant";
 import CommentList from "../components/CommentList/CommentList";
+import { GetPostById } from "../../domain/api/post";
 
 interface IProps {
   postId: string;
@@ -12,16 +11,9 @@ interface IProps {
 const PostDetails: React.FC<IProps> = (IProps) => {
   const [post, setPost] = React.useState<Post>();
   useEffect(() => {
-    axios
-      .get(apiUrlPost + IProps.postId, {
-        headers: {
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res: any) => {
-        setPost(res.data.data as Post);
-        console.log(res.data.data.topic.title);
-      });
+    GetPostById(Number(IProps.postId)).then((res: any) => {
+      setPost(res.data as Post);
+    });
   }, []);
   return (
     <>
