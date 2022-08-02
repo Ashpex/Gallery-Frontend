@@ -9,7 +9,7 @@ interface IProps {
   postId: string;
 }
 
-const PostDetails:React.FC<IProps> = (IProps) => {
+const PostDetails: React.FC<IProps> = (IProps) => {
   const [post, setPost] = React.useState<Post>();
   useEffect(() => {
     axios
@@ -21,7 +21,6 @@ const PostDetails:React.FC<IProps> = (IProps) => {
       .then((res: any) => {
         setPost(res.data.data as Post);
         console.log(res.data.data.topic.title);
-        
       });
   }, []);
   return (
@@ -31,7 +30,6 @@ const PostDetails:React.FC<IProps> = (IProps) => {
         <br />
         <CommentList postID={IProps.postId} />
       </div>
-
     </>
   );
 };
