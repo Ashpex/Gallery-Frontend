@@ -1,4 +1,3 @@
-import Topic from "../entity/topic";
 import { apiUrlTopic } from "../../utils/constant";
 import axios from "axios";
 

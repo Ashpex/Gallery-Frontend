@@ -1,15 +1,7 @@
-import axios from "axios";
 import { Badge } from "flowbite-react";
 import React, { useEffect } from "react";
 import post from "../../../domain/entity/post";
-import {
-  apiUrlComment,
-  apiUrlLike,
-  apiUrlPost,
-  apiUrlTopic,
-  LOCAL_URL,
-} from "../../../utils/constant";
-import { GetAllTopics } from "../../../domain/api/topic";
+import { LOCAL_URL } from "../../../utils/constant";
 import { AiOutlineLike, AiOutlineComment } from "react-icons/ai";
 import { GetPostById } from "../../../domain/api/post";
 import { CountLikes } from "../../../domain/api/like";

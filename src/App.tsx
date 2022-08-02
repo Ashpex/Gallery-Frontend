@@ -11,6 +11,7 @@ import Profile from "./presentation/pages/Profile";
 import Footer from "./presentation/components/Footer/Footer";
 import Topic from "./presentation/pages/Topic";
 import PostDetails from "./presentation/pages/PostDetails";
+import UserPage from "./presentation/pages/UserPage";
 function App() {
   return (
     <div className="App">
@@ -40,7 +41,7 @@ function App() {
     let { id } = useParams();
     return (
       <div>
-        <h3>ID: {id}</h3>
+        {id !== undefined && <UserPage userID={id} /> }
       </div>
     );
   }

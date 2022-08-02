@@ -6,3 +6,5 @@ export const apiUrlComment = apiUrl + 'comments/';
 export const apiUrlTopic = apiUrl + 'topics/';
 export const apiUrlLike = apiUrl + 'likes/';
 export const apiUrlSubscribe = apiUrl + 'subscribes/';
+export const apiUrlAuth = apiUrl + 'auth/';
+export const apiUrlFollow = apiUrl + 'followers/';

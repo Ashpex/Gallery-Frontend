@@ -23,7 +23,7 @@ const CommentCard: React.FC<Props> = (props) => {
                     />
                   </div>
                   <div className="text-sm font-semibold text-gray-900 lex dark:text-gray-300 hover:underline">
-                    test as
+                    {props.comment.user.name}
                   </div>
                 </div>
 

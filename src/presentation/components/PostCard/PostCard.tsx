@@ -1,11 +1,17 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import Post from "../../../domain/entity/post";
-import { apiUrlComment, apiUrlLike, apiUrlPost } from "../../../utils/constant";
+import {
+  apiUrlComment,
+  apiUrlLike,
+  apiUrlPost,
+  LOCAL_URL,
+} from "../../../utils/constant";
 import { AiOutlineLike, AiOutlineComment } from "react-icons/ai";
 import { GetPostById } from "../../../domain/api/post";
 import { CountLikes } from "../../../domain/api/like";
 import { CountComments } from "../../../domain/api/comment";
+import { Button } from "flowbite-react";
 interface IProps {
   post: Post;
 }
@@ -14,11 +20,13 @@ const PostCard: React.FC<IProps> = (props: IProps) => {
   const [topic, setTopic] = React.useState<string>("");
   const [likeCount, setLikeCount] = React.useState<number>(0);
   const [commentCount, setCommentCount] = React.useState<number>(0);
-
+  const [userURl, setUserURl] = React.useState<string>("");
   useEffect(() => {
     GetPostById(props.post.id).then((res: any) => {
       setTopicID(res.data.topic.id as number);
       setTopic(res.data.topic.title as string);
+      setUserURl(LOCAL_URL + "user/" + res.data.user.id);
+      console.log(res.data.user.id);
     });
   }, []);
 
@@ -40,12 +48,15 @@ const PostCard: React.FC<IProps> = (props: IProps) => {
         {" "}
         <div className="rounded-xl border p-5 shadow-md bg-white">
           <div className="flex w-full items-center justify-between border-b pb-3">
-            <div className="flex items-center space-x-3">
-              <div className="h-8 w-8 rounded-full bg-slate-400 bg-[url('https://i.pravatar.cc/32')]"></div>
-              <div className="text-lg font-bold text-slate-700">
-                {props.post.user.name}
+            <a href={userURl}>
+              <div className="flex items-center space-x-3">
+                <div className="h-8 w-8 rounded-full bg-slate-400 bg-[url('https://i.pravatar.cc/32')]"></div>
+                <div className="text-lg font-bold text-slate-700">
+                  {props.post.user.name}
+                </div>
               </div>
-            </div>
+            </a>
+
             <div className="flex items-center space-x-8">
               <button
                 className="rounded-2xl border bg-neutral-100 px-3 py-1 text-xs font-semibold"
@@ -77,7 +88,11 @@ const PostCard: React.FC<IProps> = (props: IProps) => {
             <div className="flex items-center justify-between text-slate-500">
               <div className="flex space-x-4 md:space-x-8">
                 <div className="flex cursor-pointer items-center transition hover:text-slate-600">
-                  <AiOutlineComment className="text-gray-600" size={20} />
+                  <AiOutlineComment
+                    className="text-gray-600"
+                    size={20}
+                    onClick={handleLikeClick()}
+                  />
 
                   <span>{commentCount}</span>
                 </div>
@@ -104,3 +119,9 @@ function handleTopicClick(
   };
 }
 export default PostCard;
+function handleLikeClick(): React.MouseEventHandler<SVGElement> | undefined {
+  return (event) => {
+    event.preventDefault();
+    console.log("like");
+  };
+}
