@@ -1,30 +1,7 @@
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 import { apiUrlUser, apiUrlAuth } from "../../utils/constant";
 
-
-export async function Login(email: string, password: string): Promise<any> {
-    return (axios.post(apiUrlAuth + "login", {
-        email,
-        password,
-    }).then
-        ((response) => {
-            return response.data;
-        }).catch((error) => {
-            return Promise.reject(error);
-        }));
-}
-
-export async function Register(email: string, password: string): Promise<any> {
-    return (axios.post(apiUrlAuth + "register", {
-        email,
-        password,
-    }).then
-        ((response) => {
-            return response.data;
-        }).catch((error) => {
-            return Promise.reject(error);
-        }));
-}
 
 export async function GetUserProfile(): Promise<any> {
     return (axios.get(apiUrlUser + "profile", {
@@ -64,9 +41,12 @@ export async function UpdateUserProfile(name: string, email: string): Promise<an
         }));
 }
 
+export function LogOut(): any {
+    localStorage.removeItem("token");
+}
+
 export default {
-    Login,
-    Register,
     GetUserProfile,
     UpdateUserProfile,
+    LogOut,
 }

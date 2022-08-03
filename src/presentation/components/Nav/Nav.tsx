@@ -128,6 +128,7 @@ export const Nav: React.FC<{}> = () => {
                   Home
                 </a>
               </li>
+
               <li>
                 <a
                   href="/upload"
