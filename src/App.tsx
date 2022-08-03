@@ -20,27 +20,44 @@ import PostDetails from "./presentation/pages/PostDetails";
 import UserPage from "./presentation/pages/UserPage";
 import PrivateRoute from "./route/PrivateRoute";
 import { LogOut } from "./domain/api/user";
+import UpdateProfile from "./presentation/pages/UpdateProfile";
 function App() {
   return (
     <div className="App">
       <div className="container mx-auto">
         <Nav />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/upload" element={<PrivateRoute outlet={<Upload />} />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/logout" element={<HandleLogout />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/topic/:id" element={<TopicChild />} />
-            <Route path="/user/profile" element={<PrivateRoute outlet={<Profile />} />} />
-            <Route path="/user/:id" element={<PrivateRoute outlet={<UserChild />} />} />
-            <Route path="/posts/:id" element={<PostDetailsChild />} />
-            <Route path="*" element={<Notfound />} />
-          </Routes>
-        </BrowserRouter>
-        <br />
-        <Footer />
+        <div className="pt-20">
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route
+                path="/upload"
+                element={<PrivateRoute outlet={<Upload />} />}
+              />
+              <Route path="/login" element={<Login />} />
+              <Route path="/logout" element={<HandleLogout />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/topic/:id" element={<TopicChild />} />
+              <Route
+                path="/user/profile"
+                element={<PrivateRoute outlet={<Profile />} />}
+              />
+              <Route
+                path="/user/profile/update"
+                element={<PrivateRoute outlet={<UpdateProfile />} />}
+              />
+              <Route
+                path="/user/:id"
+                element={<PrivateRoute outlet={<UserChild />} />}
+              />
+              <Route path="/posts/:id" element={<PostDetailsChild />} />
+              <Route path="*" element={<Notfound />} />
+            </Routes>
+          </BrowserRouter>
+          <br />
+          <Footer />
+          <div />
+        </div>
       </div>
     </div>
   );

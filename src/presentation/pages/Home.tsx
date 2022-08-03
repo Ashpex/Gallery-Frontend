@@ -1,31 +1,20 @@
-import React, { useEffect } from "react";
-import Tab from "../components/Tab/Tab";
-import { apiUrlPost } from "../../utils/constant";
-import SuccessAlert from "../components/Alerts/SuccessAlert";
-import axios from "axios";
-import ErrorAlert from "../components/Alerts/ErrorAlert";
+import GalleryGrid from "../components/GalleryGrid/GalleryGrid";
 import TopicButton from "../components/TopicButton/TopicButton";
 const Home = () => {
-  useEffect(() => {
-    (async () => {
-      axios
-        .get(apiUrlPost, {
-          headers: {
-            Authorization: `${localStorage.getItem("token")}`,
-          },
-        })
-        .then((res) => {
-          //console.log(res)
-        });
-    })();
-  }, []);
   return (
     <>
       <div className="container flex items-center flex-col w-full">
+        <div className="flex flex-col items-center justify-center">
+          <h1 className="text-3xl text-gray-700 font-bold text-center">
+            Welcome to the Gallery
+          </h1>
+          <p className="text-gray-600 text-center">Explore some topics</p>
+        </div>
+        <br />
+
         <TopicButton />
       </div>
-      <Tab />
-
+      <GalleryGrid />
     </>
   );
 };

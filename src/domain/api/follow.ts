@@ -27,7 +27,7 @@ export async function UnfollowUser(id: string): Promise<any> {
     }));
 }
 
-export async function AllFollowersOfUser(id: string): Promise<any> {
+export async function GetAllFollowersOfUser(id: number): Promise<any> {
     return (axios.get(apiUrlFollow + id, {
         headers: {
             Authorization: `${localStorage.getItem("token")}`,
@@ -49,4 +49,11 @@ export async function IsFollowing(id: string): Promise<any> {
     }).catch((error) => {
         return Promise.reject(error);
     }));
+}
+
+export default {
+    FollowUser,
+    UnfollowUser,
+    GetAllFollowersOfUser,
+    IsFollowing,
 }

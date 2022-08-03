@@ -11,7 +11,6 @@ import { AiOutlineLike, AiOutlineComment } from "react-icons/ai";
 import { GetPostById } from "../../../domain/api/post";
 import { CountLikes } from "../../../domain/api/like";
 import { CountComments } from "../../../domain/api/comment";
-import { Button } from "flowbite-react";
 interface IProps {
   post: Post;
 }

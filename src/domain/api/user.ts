@@ -33,6 +33,10 @@ export async function UpdateUserProfile(name: string, email: string): Promise<an
     return (axios.put(apiUrlUser + "profile", {
         name,
         email,
+    }, {
+        headers: {
+            Authorization: `${localStorage.getItem("token")}`,
+        },
     }).then
         ((response) => {
             return response.data;

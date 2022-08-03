@@ -16,7 +16,7 @@ interface Props {
   post: Post;
 }
 
-const Tab: React.FC<PropsWithChildren> = () => {
+const GalleryGrid: React.FC<PropsWithChildren> = () => {
   const [allPosts, setAllPosts] = React.useState<Post[]>([]);
   const [trendingPosts, setTrendingPosts] = React.useState<Post[]>([]);
   const [subscribedPosts, setSubscribedPosts] = React.useState<Post[]>([]);
@@ -81,4 +81,4 @@ const Tab: React.FC<PropsWithChildren> = () => {
   );
 };
 
-export default Tab;
+export default GalleryGrid;

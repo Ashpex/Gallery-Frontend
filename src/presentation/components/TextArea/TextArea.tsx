@@ -1,5 +1,4 @@
 import { Label, Textarea } from "flowbite-react";
-import React from "react";
 
 const TextArea = () => {
   return (
