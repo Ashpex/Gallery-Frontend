@@ -1,13 +1,55 @@
 import { Card, Dropdown } from "flowbite-react";
 import React, { useEffect } from "react";
 import logo from "../../../assets/logo.png";
+import {
+  FollowUser,
+  IsFollowing,
+  UnfollowUser,
+} from "../../../domain/api/follow";
 import user from "../../../domain/entity/user";
-interface IUser{
+interface IUser {
   user: user;
 }
-const UserCard:React.FC<IUser> =  (IUser) => {
+const UserCard: React.FC<IUser> = (IUser) => {
   const [isFollowing, setIsFollowing] = React.useState(false);
-
+  useEffect(() => {
+    IsFollowing(IUser.user.id)
+      .then((res: any) => {
+        if (res.data) {
+          setIsFollowing(true);
+        } else {
+          setIsFollowing(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  function handleFollow():
+    | React.MouseEventHandler<HTMLButtonElement>
+    | undefined {
+    if (isFollowing) {
+      return () => {
+        UnfollowUser(IUser.user.id)
+          .then((res: any) => {
+            setIsFollowing(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
+    } else {
+      return () => {
+        FollowUser(IUser.user.id)
+          .then((res: any) => {
+            setIsFollowing(true);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
+    }
+  }
 
   return (
     <>
@@ -28,14 +70,13 @@ const UserCard:React.FC<IUser> =  (IUser) => {
                 {IUser.user.email}
               </span>
               <div className="mt-4 flex space-x-3 lg:mt-6">
-                <a
-                  href="#"
-                  style={{"backgroundColor": isFollowing ? "gray" : "blue"}}
+                <button
+                  onClick={handleFollow()}
+                  style={{ backgroundColor: isFollowing ? "gray" : "blue" }}
                   className="inline-flex items-center rounded-lg bg-blue-700 py-2 px-4 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
-
                   {isFollowing ? "Unfollow" : "Follow"}
-                </a>
+                </button>
                 <a
                   href="#"
                   className="inline-flex items-center rounded-lg border border-gray-300 bg-white py-2 px-4 text-center text-sm font-medium text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-700"

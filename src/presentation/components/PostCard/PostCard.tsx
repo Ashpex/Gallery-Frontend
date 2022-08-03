@@ -20,6 +20,7 @@ const PostCard: React.FC<IProps> = (props: IProps) => {
   const [likeCount, setLikeCount] = React.useState<number>(0);
   const [commentCount, setCommentCount] = React.useState<number>(0);
   const [userURl, setUserURl] = React.useState<string>("");
+  let picUrl = "http://localhost:8080/" + props.post.image_path;
   useEffect(() => {
     GetPostById(props.post.id).then((res: any) => {
       setTopicID(res.data.topic.id as number);
@@ -72,11 +73,12 @@ const PostCard: React.FC<IProps> = (props: IProps) => {
             <div className="text-sm text-neutral-600">
               {props.post.description}
             </div>
+            <br />
             <div className="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
               <a href="#">
                 <img
                   className="rounded-lg"
-                  src="https://picsum.photos/seed/picsum/1800/800"
+                  src={picUrl}
                   alt="post's image"
                 />
               </a>

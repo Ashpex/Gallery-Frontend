@@ -3,13 +3,16 @@ import React, { useEffect } from "react";
 import User from "../../domain/entity/user";
 import { apiUrlPost, apiUrlUser } from "../../utils/constant";
 import UserCard from "../components/UserCard/UserCard";
-import { GetUserProfileByID } from "../../domain/api/user";
+import user, { GetUserProfileByID } from "../../domain/api/user";
 import Post from "../../domain/entity/post";
 import PostItem from "../components/PostItem/PostItem";
 import { Tabs } from "flowbite-react";
-import { AiOutlineUser } from "react-icons/ai";
+import { AiOutlineUser, AiOutlineUsergroupAdd } from "react-icons/ai";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
-import { GetAllFollowersOfUser } from "../../domain/api/follow";
+import {
+  GetAllFollowersOfUser,
+  GetAllFollowingOfUser,
+} from "../../domain/api/follow";
 import Avatar from "../components/Avatar/Avatar";
 interface IProps {
   userID: string;
@@ -18,6 +21,7 @@ const UserPage: React.FC<IProps> = (props: IProps) => {
   const [currentUser, setCurrentUser] = React.useState<User>();
   const [allPosts, setAllPosts] = React.useState<Post[]>([]);
   const [allFollowers, setAllFollowers] = React.useState<User[]>([]);
+  const [tempData, setTempData] = React.useState<any[]>([]);
   const [allFollowing, setAllFollowing] = React.useState<User[]>([]);
 
   useEffect(() => {
@@ -39,12 +43,28 @@ const UserPage: React.FC<IProps> = (props: IProps) => {
     GetAllFollowersOfUser(Number(props.userID))
       .then((res: any) => {
         setAllFollowers(res.data as User[]);
-        console.log(allFollowers);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+  useEffect(() => {
+    GetAllFollowingOfUser(Number(props.userID))
+      .then((res: any) => {
+        setTempData(res.data as any[]);
+        for (let i = 0; i < tempData.length; i++) {
+          GetUserProfileByID(tempData[i].user_id).then((res: any) => {
+            allFollowing.push(res.data);
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+
 
   return (
     <>
@@ -66,6 +86,21 @@ const UserPage: React.FC<IProps> = (props: IProps) => {
                     id: follower.user.id,
                     name: follower.user.name,
                     email: follower.user.email,
+                  }}
+                />
+              );
+            })}
+          </div>
+        </Tabs.Item>
+        <Tabs.Item title="Following" icon={AiOutlineUsergroupAdd}>
+          <div className="justify-center items-center self-center">
+            {allFollowing.map((following: any) => {
+              return (
+                <Avatar
+                  user={{
+                    id: following.id,
+                    name: following.name,
+                    email: following.email,
                   }}
                 />
               );

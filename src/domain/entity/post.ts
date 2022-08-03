@@ -5,7 +5,7 @@ export interface Post{
     title: string;
     description: string;
     user: User;
-    imageUrl: string;
+    image_path: string;
 }
 
 export default Post;

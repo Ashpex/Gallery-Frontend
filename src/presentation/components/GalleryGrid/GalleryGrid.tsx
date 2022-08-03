@@ -50,7 +50,7 @@ const GalleryGrid: React.FC<PropsWithChildren> = () => {
     <>
       <Tabs.Group aria-label="Tabs with underline" style="underline">
         <Tabs.Item active={true} title="All">
-          <div className="grid grid-cols-3 gap-3">
+          <div className="columns-3 gap-3">
             {allPosts.map((allPosts: Post) => {
               return <PostItem post={allPosts} />;
             })}

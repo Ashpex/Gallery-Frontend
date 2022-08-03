@@ -3,9 +3,14 @@ import { Button } from "flowbite-react";
 import React, { useEffect } from "react";
 import Post from "../../domain/entity/post";
 import PostCard from "../components/PostCard/PostCard";
-import {GetTopicById } from "../../domain/api/topic";
+import { GetTopicById } from "../../domain/api/topic";
 import { GetAllPostsByTopicId } from "../../domain/api/post";
-import {SubscribeTopic, UnsubscribeTopic, CountSubscribersOfTopic} from "../../domain/api/subscribe";
+import {
+  SubscribeTopic,
+  UnsubscribeTopic,
+  CountSubscribersOfTopic,
+} from "../../domain/api/subscribe";
+import PostItem from "../components/PostItem/PostItem";
 interface IProps {
   topicId: string;
 }
@@ -30,8 +35,7 @@ const Topic: React.FC<IProps> = (IProps) => {
       console.log(res);
       setCountSubscribers(res.data as number);
     });
-  }
-  , []);
+  }, []);
 
   return (
     <>
@@ -47,9 +51,14 @@ const Topic: React.FC<IProps> = (IProps) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap gap-2">
+
+      <div className="flex-wrap grid grid-cols-3 gap-3">
         {posts.map((post: Post) => {
-          return <PostCard post={post} />;
+          return (
+            <>
+                <PostItem post={post} />
+            </>
+          );
         })}
       </div>
     </>
