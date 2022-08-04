@@ -32,13 +32,6 @@ const Topic: React.FC<IProps> = (IProps) => {
   }, []);
 
   useEffect(() => {
-    CountSubscribersOfTopic(IProps.topicId).then((res: any) => {
-      console.log(res);
-      setCountSubscribers(res.data as number);
-    });
-  }, []);
-
-  useEffect(() => {
     IsSubscribed(IProps.topicId)
       .then((res: any) => {
         if (res.data) {
@@ -50,6 +43,13 @@ const Topic: React.FC<IProps> = (IProps) => {
       .catch((err: any) => {
         console.log(err);
       });
+  }, []);
+
+  useEffect(() => {
+    CountSubscribersOfTopic(IProps.topicId).then((res: any) => {
+      console.log(res);
+      setCountSubscribers(res.data as number);
+    });
   }, []);
 
   function handleSubscribe(
@@ -108,7 +108,7 @@ const Topic: React.FC<IProps> = (IProps) => {
         </div>
       </div>
 
-      <div className="flex-wrap grid grid-cols-3 gap-3">
+      <div className="flex-wrap columns-4 gap-3">
         {posts.map((post: Post) => {
           return (
             <>

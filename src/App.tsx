@@ -21,13 +21,15 @@ import UserPage from "./presentation/pages/UserPage";
 import PrivateRoute from "./route/PrivateRoute";
 import { LogOut } from "./domain/api/user";
 import UpdateProfile from "./presentation/pages/UpdateProfile";
+import TestHook from "./presentation/pages/TestHook";
+import Search from "./presentation/pages/Search";
 function App() {
   return (
     <div className="App">
       <div className="container mx-auto">
-        <Nav />
         <div className="pt-20">
           <BrowserRouter>
+            <Nav />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route
@@ -52,6 +54,8 @@ function App() {
               />
               <Route path="/posts/:id" element={<PostDetailsChild />} />
               <Route path="*" element={<Notfound />} />
+              <Route path="/testhook" element={<TestHook />} />
+              <Route path="/search/:keyword" element={<SearchChild />} />
             </Routes>
           </BrowserRouter>
           <br />
@@ -80,6 +84,11 @@ function App() {
     let { id } = useParams();
     return <div>{id !== undefined && <Topic topicId={id} />}</div>;
   }
+}
+
+function SearchChild() {
+  let { keyword } = useParams();
+  return <div>{keyword !== undefined && <Search searchValue={keyword} />}</div>;
 }
 
 export default App;

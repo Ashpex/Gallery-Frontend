@@ -1,14 +1,17 @@
-import React, { SyntheticEvent, useState } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
 import ErrorAlert from "../components/Alerts/ErrorAlert";
 import SuccessAlert from "../components/Alerts/SuccessAlert";
-
-interface Props {
-  email: string;
-  password: string;
+import { useForm, SubmitHandler } from "react-hook-form";
+interface IFormInputs {
+  email: string
+  password: string
 }
+const onSubmit: SubmitHandler<IFormInputs> = data => console.log(data);
+
 const Login = () => {
+  const { register, formState: { errors }, handleSubmit } = useForm<IFormInputs>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
@@ -16,7 +19,6 @@ const Login = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const submit = async (e: SyntheticEvent) => {
     e.preventDefault();
-
     axios.post("http://localhost:8080/api/auth/login", {
       email,
       password,

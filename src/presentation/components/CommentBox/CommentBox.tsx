@@ -35,7 +35,7 @@ const CommentBox: React.FC<IProps> = (IProps) => {
       });
   };
   if (redirect) {
-    return <Navigate to="/" />;
+    window.location.reload();
   }
 
   return (

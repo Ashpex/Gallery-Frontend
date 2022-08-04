@@ -122,6 +122,20 @@ export async function GetSubscribedTopicPosts(): Promise<any> {
         ));
 }
 
+export async function SearchPosts(search: string): Promise<any> {
+    return (axios.get(apiUrlPost + "search/" + search, {
+        headers: {
+            Authorization: `${localStorage.getItem("token")}`,
+        },
+    }).then
+        ((response) => {
+            return response.data;
+        }
+        ).catch((error) => {
+            return Promise.reject(error);
+        }
+        ));
+}
 
 export default {
     GetAllPosts,
@@ -133,4 +147,5 @@ export default {
     GetTrendingPosts,
     GetFollowingPosts,
     GetSubscribedTopicPosts,
+    SearchPosts,
 }
