@@ -64,21 +64,21 @@ const GalleryGrid: React.FC<PropsWithChildren> = () => {
     <>
       <Tabs.Group aria-label="Tabs with underline" style="underline">
         <Tabs.Item active={true} title="All">
-          <div className="columns-3 gap-3">
+          <div className="columns-4 gap-3">
             {allPosts.map((allPosts: Post) => {
               return <PostItem post={allPosts} key={allPosts.id} />;
             })}
           </div>
         </Tabs.Item>
         <Tabs.Item title="Trending">
-          <div className="columns-3 gap-3">
+          <div className="columns-4 gap-3">
             {trendingPosts.map((trendingPosts: Post) => {
               return <PostItem post={trendingPosts} key={trendingPosts.id} />;
             })}
           </div>
         </Tabs.Item>
         <Tabs.Item title="Subscribed topics">
-          <div className="columns-3 gap-3">
+          <div className="columns-4 gap-3">
             {subscribedPosts.map((subscribedPosts: Post) => {
               return (
                 <PostItem post={subscribedPosts} key={subscribedPosts.id} />
@@ -87,7 +87,7 @@ const GalleryGrid: React.FC<PropsWithChildren> = () => {
           </div>{" "}
         </Tabs.Item>
         <Tabs.Item title="Followers"></Tabs.Item>
-        <div className="columns-3 gap-3">
+        <div className="columns-4 gap-3">
           {followersPosts.map((followersPosts: Post) => {
             return <PostItem post={followersPosts} key={followersPosts.id} />;
           })}

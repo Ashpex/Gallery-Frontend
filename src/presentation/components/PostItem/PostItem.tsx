@@ -4,7 +4,12 @@ import post from "../../../domain/entity/post";
 import { LOCAL_URL, URL_TOPIC } from "../../../utils/constant";
 import { AiOutlineLike, AiOutlineComment } from "react-icons/ai";
 import { GetPostById } from "../../../domain/api/post";
-import { CountLikes, IsLiked, LikePost } from "../../../domain/api/like";
+import {
+  CountLikes,
+  IsLiked,
+  LikePost,
+  UnlikePost,
+} from "../../../domain/api/like";
 import { CountComments } from "../../../domain/api/comment";
 interface IProps {
   post: post;
@@ -65,24 +70,36 @@ const PostItem: React.FC<IProps> = (props: IProps) => {
   }, []);
 
   function HandleLikeClick(): React.MouseEventHandler<SVGElement> | undefined {
-    console.log("like");
-    useEffect(() => {
+    if (!isLiked) {
+      console.log("like");
       LikePost(props.post.id)
         .then((res: any) => {
           CountLikes(props.post.id).then((res: any) => {
             setLikeCount(res.data as number);
-            setIsLiked(true);
           });
+          setIsLiked(true);
         })
         .catch((err: any) => {
           console.log(err);
         });
-    }, []);
+    } else {
+      console.log("unlike");
+      UnlikePost(props.post.id)
+        .then((res: any) => {
+          CountLikes(props.post.id).then((res: any) => {
+            setLikeCount(res.data as number);
+          });
+          setIsLiked(false);
+        })
+        .catch((err: any) => {
+          console.log(err);
+        });
+    }
+
     return (event) => {
-      event.preventDefault();
+      console.log("clicked");
     };
   }
-
   return (
     <>
       <div className="break-inside-avoid mb-4 max-w-sm bg-white h-fit rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">

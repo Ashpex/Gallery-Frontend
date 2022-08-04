@@ -2,13 +2,13 @@ import axios from "axios";
 import { Button } from "flowbite-react";
 import React, { useEffect } from "react";
 import Post from "../../domain/entity/post";
-import PostCard from "../components/PostCard/PostCard";
 import { GetTopicById } from "../../domain/api/topic";
 import { GetAllPostsByTopicId } from "../../domain/api/post";
 import {
   SubscribeTopic,
   UnsubscribeTopic,
   CountSubscribersOfTopic,
+  IsSubscribed,
 } from "../../domain/api/subscribe";
 import PostItem from "../components/PostItem/PostItem";
 interface IProps {
@@ -18,6 +18,7 @@ const Topic: React.FC<IProps> = (IProps) => {
   const [topicName, setTopicName] = React.useState("");
   const [posts, setPosts] = React.useState<Post[]>([]);
   const [CountSubscribers, setCountSubscribers] = React.useState(0);
+  const [isSubscribed, setIsSubscribed] = React.useState<boolean>(false);
   useEffect(() => {
     GetAllPostsByTopicId(IProps.topicId).then((res: any) => {
       setPosts(res.data as Post[]);
@@ -37,6 +38,52 @@ const Topic: React.FC<IProps> = (IProps) => {
     });
   }, []);
 
+  useEffect(() => {
+    IsSubscribed(IProps.topicId)
+      .then((res: any) => {
+        if (res.data) {
+          setIsSubscribed(true);
+        } else {
+          setIsSubscribed(false);
+        }
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
+  }, []);
+
+  function handleSubscribe(
+    topicId: string
+  ): React.MouseEventHandler<HTMLButtonElement> | undefined {
+    return (event) => {
+      if (isSubscribed) {
+        UnsubscribeTopic(IProps.topicId)
+          .then((res: any) => {
+            console.log("unsubscribed");
+            CountSubscribersOfTopic(IProps.topicId).then((res: any) => {
+              setCountSubscribers(res.data as number);
+            });
+            setIsSubscribed(false);
+          })
+          .catch((err: any) => {
+            console.log(err);
+          });
+      } else {
+        SubscribeTopic(IProps.topicId)
+          .then((res: any) => {
+            console.log("subscribed");
+            CountSubscribersOfTopic(IProps.topicId).then((res: any) => {
+              setCountSubscribers(res.data as number);
+            });
+            setIsSubscribed(true);
+          })
+          .catch((err: any) => {
+            console.log(err);
+          });
+      }
+    };
+  }
+
   return (
     <>
       <div className="container px-4 mx-auto">
@@ -47,7 +94,16 @@ const Topic: React.FC<IProps> = (IProps) => {
           </p>
           <br />
           <div className="flex flex-wrap gap-2 justify-center">
-            <Button onClick={handleSubscribe(IProps.topicId)}>Subscribe</Button>
+            <Button
+              style={
+                isSubscribed
+                  ? { backgroundColor: "gray" }
+                  : { backgroundColor: "#1d4ed8" }
+              }
+              onClick={handleSubscribe(IProps.topicId)}
+            >
+              {isSubscribed ? "Unsubscribe" : "Subscribe"}
+            </Button>
           </div>
         </div>
       </div>
@@ -56,7 +112,7 @@ const Topic: React.FC<IProps> = (IProps) => {
         {posts.map((post: Post) => {
           return (
             <>
-                <PostItem post={post} />
+              <PostItem post={post} />
             </>
           );
         })}
@@ -66,13 +122,3 @@ const Topic: React.FC<IProps> = (IProps) => {
 };
 
 export default Topic;
-
-function handleSubscribe(
-  topicId: string
-): React.MouseEventHandler<HTMLButtonElement> | undefined {
-  return (event) => {
-    SubscribeTopic(topicId).then((res: any) => {
-      console.log(res);
-    });
-  };
-}
