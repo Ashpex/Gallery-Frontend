@@ -18,7 +18,7 @@ const CommentCard: React.FC<Props> = (props) => {
                   <div className="flex justify-center items-center w-6 h-6 bg-blue-200 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
                     <img
                       className="rounded-full shadow-lg"
-                      src={logo}
+                      src="https://i.pravatar.cc/32"
                       alt="avatar image"
                     />
                   </div>

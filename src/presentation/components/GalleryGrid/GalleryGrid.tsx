@@ -1,10 +1,8 @@
 import { Tabs } from "flowbite-react";
 import React, { PropsWithChildren, useEffect } from "react";
 import { Post } from "../../../domain/entity/post";
-import User from "../../../domain/entity/user";
 import PostItem from "../PostItem/PostItem";
-import axios from "axios";
-import { apiUrlPost } from "../../../utils/constant";
+
 import {
   GetAllPosts,
   GetTrendingPosts,
@@ -23,27 +21,43 @@ const GalleryGrid: React.FC<PropsWithChildren> = () => {
   const [followersPosts, setFollowersPosts] = React.useState<Post[]>([]);
 
   useEffect(() => {
-    GetAllPosts().then((res: any) => {
-      setAllPosts(res.data as Post[]);
-    });
+    GetAllPosts()
+      .then((res: any) => {
+        setAllPosts(res.data as Post[]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   useEffect(() => {
-    GetTrendingPosts().then((res: any) => {
-      setTrendingPosts(res.data as Post[]);
-    });
+    GetTrendingPosts()
+      .then((res: any) => {
+        setTrendingPosts(res.data as Post[]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   useEffect(() => {
-    GetFollowingPosts().then((res: any) => {
-      setSubscribedPosts(res.data as Post[]);
-    });
+    GetFollowingPosts()
+      .then((res: any) => {
+        setSubscribedPosts(res.data as Post[]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   useEffect(() => {
-    GetSubscribedTopicPosts().then((res: any) => {
-      setSubscribedPosts(res.data as Post[]);
-    });
+    GetSubscribedTopicPosts()
+      .then((res: any) => {
+        setFollowersPosts(res.data as Post[]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   return (
@@ -52,28 +66,30 @@ const GalleryGrid: React.FC<PropsWithChildren> = () => {
         <Tabs.Item active={true} title="All">
           <div className="columns-3 gap-3">
             {allPosts.map((allPosts: Post) => {
-              return <PostItem post={allPosts} />;
+              return <PostItem post={allPosts} key={allPosts.id} />;
             })}
           </div>
         </Tabs.Item>
         <Tabs.Item title="Trending">
-          <div className="grid grid-cols-3 gap-3">
+          <div className="columns-3 gap-3">
             {trendingPosts.map((trendingPosts: Post) => {
-              return <PostItem post={trendingPosts} />;
+              return <PostItem post={trendingPosts} key={trendingPosts.id} />;
             })}
           </div>
         </Tabs.Item>
         <Tabs.Item title="Subscribed topics">
-          <div className="grid grid-cols-3 gap-3">
+          <div className="columns-3 gap-3">
             {subscribedPosts.map((subscribedPosts: Post) => {
-              return <PostItem post={subscribedPosts} />;
+              return (
+                <PostItem post={subscribedPosts} key={subscribedPosts.id} />
+              );
             })}
           </div>{" "}
         </Tabs.Item>
         <Tabs.Item title="Followers"></Tabs.Item>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="columns-3 gap-3">
           {followersPosts.map((followersPosts: Post) => {
-            return <PostItem post={followersPosts} />;
+            return <PostItem post={followersPosts} key={followersPosts.id} />;
           })}
         </div>{" "}
       </Tabs.Group>

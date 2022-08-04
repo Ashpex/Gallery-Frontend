@@ -23,9 +23,13 @@ const TopicButton = () => {
   const [topics, setTopics] = React.useState<Topic[]>([]);
 
   useEffect(() => {
-    GetAllTopics().then((res: any) => {
-      setTopics(res.data as Topic[]);
-    });
+    GetAllTopics()
+      .then((res: any) => {
+        setTopics(res.data as Topic[]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   return (
@@ -38,6 +42,7 @@ const TopicButton = () => {
               gradientDuoTone={
                 ButtonType[Math.floor(Math.random() * ButtonType.length)]
               }
+              key={topic.id}
             >
               {topic.title}
             </Button>

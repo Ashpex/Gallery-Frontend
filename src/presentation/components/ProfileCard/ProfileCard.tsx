@@ -19,7 +19,7 @@ const UserCard: React.FC<IUser> = (IUser) => {
               <a href={UserUrl}>
                 <img
                   className="mb-3 h-24 w-24 rounded-full shadow-lg"
-                  src={logo}
+                  src="https://i.pravatar.cc/128"
                   alt="Avatar image"
                 />
               </a>

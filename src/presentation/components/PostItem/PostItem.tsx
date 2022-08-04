@@ -4,7 +4,7 @@ import post from "../../../domain/entity/post";
 import { LOCAL_URL, URL_TOPIC } from "../../../utils/constant";
 import { AiOutlineLike, AiOutlineComment } from "react-icons/ai";
 import { GetPostById } from "../../../domain/api/post";
-import { CountLikes } from "../../../domain/api/like";
+import { CountLikes, IsLiked, LikePost } from "../../../domain/api/like";
 import { CountComments } from "../../../domain/api/comment";
 interface IProps {
   post: post;
@@ -14,33 +14,79 @@ const PostItem: React.FC<IProps> = (props: IProps) => {
   const [topicName, setTopicName] = React.useState<string>("");
   const [topicID, setTopicID] = React.useState<string>("");
   const [likeCount, setLikeCount] = React.useState<number>(0);
+  const [isLiked, setIsLiked] = React.useState<boolean>(true);
   const [commentCount, setCommentCount] = React.useState<number>(0);
   var postUrl = LOCAL_URL + "posts/" + props.post.id;
   let topicUrl = URL_TOPIC + topicID;
   let picUrl = "http://localhost:8080/" + props.post.image_path;
   useEffect(() => {
-    GetPostById(props.post.id).then((res: any) => {
-      setTopicName(res.data.topic.title as string);
-      setTopicID(res.data.topic.id as string);
-    });
+    GetPostById(props.post.id)
+      .then((res: any) => {
+        setTopicName(res.data.topic.title as string);
+        setTopicID(res.data.topic.id as string);
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
   }, []);
 
   useEffect(() => {
-    CountLikes(props.post.id).then((res: any) => {
-      setLikeCount(res.data as number);
-    });
+    CountLikes(props.post.id)
+      .then((res: any) => {
+        setLikeCount(res.data as number);
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
   }, []);
 
   useEffect(() => {
-    CountComments(props.post.id).then((res: any) => {
-      setCommentCount(res.data as number);
-    });
+    CountComments(props.post.id)
+      .then((res: any) => {
+        setCommentCount(res.data as number);
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
   }, []);
+
+  useEffect(() => {
+    IsLiked(props.post.id)
+      .then((res: any) => {
+        if (res.data) {
+          setIsLiked(true);
+        } else {
+          setIsLiked(false);
+        }
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
+  }, []);
+
+  function HandleLikeClick(): React.MouseEventHandler<SVGElement> | undefined {
+    console.log("like");
+    useEffect(() => {
+      LikePost(props.post.id)
+        .then((res: any) => {
+          CountLikes(props.post.id).then((res: any) => {
+            setLikeCount(res.data as number);
+            setIsLiked(true);
+          });
+        })
+        .catch((err: any) => {
+          console.log(err);
+        });
+    }, []);
+    return (event) => {
+      event.preventDefault();
+    };
+  }
 
   return (
     <>
       <div className="break-inside-avoid mb-4 max-w-sm bg-white h-fit rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
-        <a href="#">
+        <a href={postUrl}>
           <img className="rounded-t-lg" src={picUrl} alt="post's image" />
         </a>
         <div className="p-4">
@@ -62,7 +108,12 @@ const PostItem: React.FC<IProps> = (props: IProps) => {
                 <span>{commentCount}</span>
               </div>
               <div className="flex cursor-pointer items-center transition hover:text-slate-600">
-                <AiOutlineLike className="text-gray-600" size={18} />
+                <AiOutlineLike
+                  className="text-gray-600"
+                  style={isLiked ? { color: "#e3342f" } : { color: "#aaa" }}
+                  size={18}
+                  onClick={HandleLikeClick}
+                />
                 <span>{likeCount}</span>
               </div>
             </div>

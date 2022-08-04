@@ -12,7 +12,7 @@ const Avatar: React.FC<IProps> = (props: IProps) => {
         <div className="hover:bg-gray-100 flex items-center space-x-4 p-4 ease-in duration-300">
           <img
             className="w-10 h-10 rounded-full"
-            src="https://ashpex.eu.org/images/avatar.webp"
+            src="https://i.pravatar.cc/128"
             alt=""
           />
           <div className="font-medium dark:text-white">

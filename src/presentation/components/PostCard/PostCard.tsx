@@ -9,8 +9,9 @@ import {
 } from "../../../utils/constant";
 import { AiOutlineLike, AiOutlineComment } from "react-icons/ai";
 import { GetPostById } from "../../../domain/api/post";
-import { CountLikes } from "../../../domain/api/like";
+import { CountLikes, IsLiked, UnlikePost } from "../../../domain/api/like";
 import { CountComments } from "../../../domain/api/comment";
+import { LikePost } from "../../../domain/api/like";
 interface IProps {
   post: Post;
 }
@@ -20,6 +21,8 @@ const PostCard: React.FC<IProps> = (props: IProps) => {
   const [likeCount, setLikeCount] = React.useState<number>(0);
   const [commentCount, setCommentCount] = React.useState<number>(0);
   const [userURl, setUserURl] = React.useState<string>("");
+  const [isLiked, setIsLiked] = React.useState<boolean>(false);
+
   let picUrl = "http://localhost:8080/" + props.post.image_path;
   useEffect(() => {
     GetPostById(props.post.id).then((res: any) => {
@@ -42,6 +45,51 @@ const PostCard: React.FC<IProps> = (props: IProps) => {
     });
   }, []);
 
+  useEffect(() => {
+    IsLiked(props.post.id)
+      .then((res: any) => {
+        if (res.data) {
+          setIsLiked(true);
+        } else {
+          setIsLiked(false);
+        }
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
+  }, []);
+
+  function HandleLikeClick(): React.MouseEventHandler<SVGElement> | undefined {
+    if (!isLiked) {
+      console.log("like");
+      LikePost(props.post.id)
+        .then((res: any) => {
+          CountLikes(props.post.id).then((res: any) => {
+            setLikeCount(res.data as number);
+          });
+          setIsLiked(true);
+        })
+        .catch((err: any) => {
+          console.log(err);
+        });
+    } else {
+      console.log("unlike");
+      UnlikePost(props.post.id)
+        .then((res: any) => {
+          CountLikes(props.post.id).then((res: any) => {
+            setLikeCount(res.data as number);
+          });
+          setIsLiked(false);
+        })
+        .catch((err: any) => {
+          console.log(err);
+        });
+    }
+
+    return (event) => {
+      console.log("clicked");
+    };
+  }
   return (
     <>
       <div className="flex items-center justify-center min-h-full">
@@ -76,11 +124,7 @@ const PostCard: React.FC<IProps> = (props: IProps) => {
             <br />
             <div className="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
               <a href="#">
-                <img
-                  className="rounded-lg"
-                  src={picUrl}
-                  alt="post's image"
-                />
+                <img className="rounded-lg" src={picUrl} alt="post's image" />
               </a>
             </div>
           </div>
@@ -89,16 +133,17 @@ const PostCard: React.FC<IProps> = (props: IProps) => {
             <div className="flex items-center justify-between text-slate-500">
               <div className="flex space-x-4 md:space-x-8">
                 <div className="flex cursor-pointer items-center transition hover:text-slate-600">
-                  <AiOutlineComment
-                    className="text-gray-600"
-                    size={20}
-                    onClick={handleLikeClick()}
-                  />
+                  <AiOutlineComment className="text-gray-600" size={20} />
 
                   <span>{commentCount}</span>
                 </div>
                 <div className="flex cursor-pointer items-center transition hover:text-slate-600">
-                  <AiOutlineLike className="text-gray-600" size={20} />
+                  <AiOutlineLike
+                    className="text-gray-600"
+                    size={18}
+                    onClick={HandleLikeClick}
+                    style={isLiked ? { color: "#e3342f" } : { color: "#aaa" }}
+                  />
 
                   <span>{likeCount}</span>
                 </div>
@@ -120,9 +165,3 @@ function handleTopicClick(
   };
 }
 export default PostCard;
-function handleLikeClick(): React.MouseEventHandler<SVGElement> | undefined {
-  return (event) => {
-    event.preventDefault();
-    console.log("like");
-  };
-}

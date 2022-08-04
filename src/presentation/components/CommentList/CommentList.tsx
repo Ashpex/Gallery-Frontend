@@ -4,7 +4,7 @@ import Comment from "../../../domain/entity/comment";
 import { apiUrlComment } from "../../../utils/constant";
 import CommentBox from "../CommentBox/CommentBox";
 import CommentCard from "../CommentCard/CommentCard";
-import { GetAllComments } from "../../../domain/api/comment";
+import comment, { GetAllComments } from "../../../domain/api/comment";
 
 interface IProps {
   postID: string;
@@ -20,7 +20,7 @@ const CommentList: React.FC<IProps> = ({ postID }) => {
     <div className="w-full">
       <CommentBox postId={postID} />
       {comments.map((comments: Comment) => {
-        return <CommentCard comment={comments} />;
+        return <CommentCard comment={comments} key={comments.id}/>;
       })}
     </div>
   );

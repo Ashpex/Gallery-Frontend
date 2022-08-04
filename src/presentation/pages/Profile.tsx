@@ -45,7 +45,7 @@ const Profile: React.FC = () => {
         <Tabs.Item title="Posts" icon={MdOutlineSpaceDashboard}>
           <div className="grid grid-cols-3 gap-3 mt-5">
             {allPosts.map((allPosts: Post) => {
-              return <PostItem post={allPosts} />;
+              return <PostItem post={allPosts} key={allPosts.id} />;
             })}
           </div>
         </Tabs.Item>
@@ -59,6 +59,7 @@ const Profile: React.FC = () => {
                     name: follower.user.name,
                     email: follower.user.email,
                   }}
+                  key={follower.user.id}
                 />
               );
             })}

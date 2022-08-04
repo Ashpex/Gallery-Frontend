@@ -73,7 +73,7 @@ const UserPage: React.FC<IProps> = (props: IProps) => {
         <Tabs.Item active={true} title="Posts" icon={MdOutlineSpaceDashboard}>
           <div className="grid grid-cols-3 gap-3 mt-5">
             {allPosts.map((allPosts: Post) => {
-              return <PostItem post={allPosts} />;
+              return <PostItem post={allPosts} key={allPosts.id}/>;
             })}
           </div>{" "}
         </Tabs.Item>
@@ -87,7 +87,7 @@ const UserPage: React.FC<IProps> = (props: IProps) => {
                     name: follower.user.name,
                     email: follower.user.email,
                   }}
-                />
+                key={follower.user.id}/>
               );
             })}
           </div>
